@@ -1,13 +1,10 @@
 package main
 
 import "core:fmt"
+import "sieve"
 
 main :: proc() {
     fmt.println("Hello, Odin!")
-
-    // エラトステネスのふるいのデモ
-    run_sieve_demo()
-
 
     // boolean - 真偽値型
     // bool: プラットフォーム依存（通常1byte）
@@ -109,4 +106,14 @@ main :: proc() {
     any_val: any = x
     fmt.printfln("typeid: %v (%d bytes)", typeid_val, size_of(typeid))
     fmt.printfln("any:    %v (%d bytes)", any_val, size_of(any))
+
+    // エラトステネスのふるいのデモ
+    limit := 100
+    primes := sieve.eratosthenes(limit)
+    defer delete(primes)
+
+    fmt.printfln("Prime numbers up to %d:", limit)
+    fmt.printfln("Count: %d", len(primes))
+    fmt.printfln("Primes: %v", primes[:])
+
 }
