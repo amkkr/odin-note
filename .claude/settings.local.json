@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git branch:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(odin test:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "odin test sieve",
+            "statusMessage": "Running tests..."
+          }
+        ]
+      }
+    ]
+  }
+}
