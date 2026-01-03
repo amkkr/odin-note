@@ -27,13 +27,15 @@ eratosthenes :: proc(n: int) -> [dynamic]int {
 }
 
 // 配列を全てtrueで初期化
+@(private)
 init_flags :: proc(flags: []bool) {
-    for i := 0; i < len(flags); i += 1 {
-        flags[i] = true
+    for index := 0; index < len(flags); index += 1 {
+        flags[index] = true
     }
 }
 
 // 0と1を非素数としてマーク
+@(private)
 mark_non_primes :: proc(flags: []bool) {
     if len(flags) > 0 {
         flags[0] = false
@@ -44,31 +46,34 @@ mark_non_primes :: proc(flags: []bool) {
 }
 
 // ふるい処理 - 素数の倍数を除外
-apply_sieve :: proc(flags: []bool, n: int) {
-    for i := 2; i * i <= n; i += 1 {
-        if flags[i] {
-            mark_multiples(flags[:], i, n)
+@(private)
+apply_sieve :: proc(flags: []bool, limit: int) {
+    for candidate := 2; candidate * candidate <= limit; candidate += 1 {
+        if flags[candidate] {
+            mark_multiples(flags[:], candidate, limit)
         }
     }
 }
 
-// iの倍数を全てfalseにする
-mark_multiples :: proc(flags: []bool, i: int, n: int) {
-    for j := i * i; j <= n; j += i {
-        flags[j] = false
+// primeの倍数を全てfalseにする
+@(private)
+mark_multiples :: proc(flags: []bool, prime: int, limit: int) {
+    for multiple := prime * prime; multiple <= limit; multiple += prime {
+        flags[multiple] = false
     }
 }
 
 // 素数を動的配列に収集
-collect_primes :: proc(flags: []bool, n: int) -> [dynamic]int {
+@(private)
+collect_primes :: proc(flags: []bool, limit: int) -> [dynamic]int {
     // 動的配列の宣言（空の状態で開始）
     // append()で要素を追加していく
     primes: [dynamic]int
-    for i := 2; i <= n; i += 1 {
-        if flags[i] {
-            // append(&primes, i) - 動的配列に要素を追加
+    for number := 2; number <= limit; number += 1 {
+        if flags[number] {
+            // append(&primes, number) - 動的配列に要素を追加
             // 第1引数はポインタ（&）で渡す
-            append(&primes, i)
+            append(&primes, number)
         }
     }
     return primes
